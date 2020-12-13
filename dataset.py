@@ -88,4 +88,19 @@ def load_dataset(path_to_train_images, path_to_test_images):
     y_train = y_train.astype("int32")
     y_test = y_test.astype("int32")
 
+    y_train = map_labels(y_train)
+    y_test = map_labels(y_test)
+
     return (x_train, y_train), (x_test, y_test)
+
+
+def map_labels(labels):
+    greek_symbol_ids = ["81", "82", "87", "88", "89", "116", "117", "150", "151", "152", "153", "154", "155", "156",
+                        "157",
+                        "158", "159", "160", "161", "162", "163", "164," "165", "166", "167", "168", "169", "170",
+                        "171",
+                        "172", "173", "174", "175", "176", "177", "178", "179", "180", "181"]
+
+    labels = [greek_symbol_ids.index(str(x)) for x in labels]
+    labels = np.array(labels)
+    return labels

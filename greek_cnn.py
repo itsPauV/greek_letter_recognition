@@ -26,14 +26,14 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
 model.add(Dense(128, activation=tf.nn.relu))
 model.add(Dropout(0.2))
-model.add(Dense(10, activation=tf.nn.softmax))
+model.add(Dense(38, activation=tf.nn.softmax))
 
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 model.fit(x=x_train, y=y_train, epochs=10)
 
 model.evaluate(x_test, y_test)
 
-
+model.save("initial.h5")
 # image_index = 4444
 # print(y_train[image_index])
 # pred = model.predict(x_train[image_index].reshape(1, 28, 28, 1))
