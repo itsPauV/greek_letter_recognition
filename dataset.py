@@ -8,6 +8,12 @@ import json
 import cv2
 import numpy as np
 
+greek_symbol_ids = ["81", "82", "87", "88", "89", "116", "117", "151", "153", "154", "155",
+                        "157",
+                        "158", "159", "160", "161", "162", "164," "165", "166", "169", "170",
+                        "171",
+                        "172", "173", "174", "176", "177", "178", "180"]
+
 
 # https://arxiv.org/pdf/1701.08380.pdf
 def read_csv(file_path):
@@ -43,11 +49,7 @@ def read_csv(file_path):
 
 def generate_images_from_dataset(dataset_path, path_out):
     dataset = read_csv(dataset_path)
-    greek_symbol_ids = ["81", "82", "87", "88", "89", "116", "117", "150", "151", "152", "153", "154", "155", "156",
-                        "157",
-                        "158", "159", "160", "161", "162", "163", "164," "165", "166", "167", "168", "169", "170",
-                        "171",
-                        "172", "173", "174", "175", "176", "177", "178", "179", "180", "181"]
+
     count = 0
     for obj in dataset:
         if obj["symbol_id"] in greek_symbol_ids:
@@ -95,12 +97,6 @@ def load_dataset(path_to_train_images, path_to_test_images):
 
 
 def map_labels(labels):
-    greek_symbol_ids = ["81", "82", "87", "88", "89", "116", "117", "150", "151", "152", "153", "154", "155", "156",
-                        "157",
-                        "158", "159", "160", "161", "162", "163", "164," "165", "166", "167", "168", "169", "170",
-                        "171",
-                        "172", "173", "174", "175", "176", "177", "178", "179", "180", "181"]
-
     labels = [greek_symbol_ids.index(str(x)) for x in labels]
     labels = np.array(labels)
     return labels
