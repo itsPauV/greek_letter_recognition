@@ -50,29 +50,48 @@ function erase() {
     }
 }
 
-function save() {
+async function save() {
+    const response = await fetch('http://127.0.0.1:5000/predict', {
+        method: 'POST',
+        body: JSON.stringify(getArray()),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const myJson = await response.json();
+    console.log(myJson);
+}
+
+function getArray() {
     var context = document.getElementById("can").getContext("2d");
     var imgd = context.getImageData(0, 0, canvas.width, canvas.height);
     var pix = imgd.data;
     var pixels = Array.from(Array(canvas.width), () => new Array(canvas.height));
-    for (var i=3; i<pix.length; i+=4) {
+    let alphaValue;
+    let x_count = 0;
+    let y_count = 0;
+    for (let i = 3; i < pix.length; i += 4) {
         try {
-            // console.log(`i: ${i}: [${Math.floor(i/(canvas.width*4+3))}|${((i-3)%(canvas.width*4))/4}] is valued: ${pix[i]}`);
+            // console.log(`i: ${i}: [${y_count}|${x_count}] is valued: ${pix[i]}`);
             // 3 -> 7 -> 11 -> ... -> 102 (34th value)
             // 0 -> 4 -> 8 -> 12
             // 100*4 + 3 values pro Reihe
             // bei i=403 -> 99
+            // bei i=256+3 -> 1|0
             alphaValue = pix[i];
-            if (alphaValue > 100) {
-                pixels[Math.floor(i/(canvas.width*4+3))][((i-3)%(canvas.width*4))/4] = 255;
+            pixels[y_count][x_count] = (alphaValue > 100) ? 255 : 0;
+            if (x_count === 63) {
+                x_count = 0;
+                y_count++;
             } else {
-                pixels[Math.floor(i/(canvas.width*4+3))][((i-3)%(canvas.width*4))/4] = 0;
+                x_count++;
             }
         } catch (error) {
             console.log("error at i: " + i);
         }
     }
     console.log(pixels);
+    return pixels;
 }
 
 function findxy(res, e) {
