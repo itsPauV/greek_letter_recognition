@@ -1,14 +1,13 @@
-from dataset import load_dataset
-from dataset import greek_symbol_ids
+from dataset import load_dataset, get_symbol_id_from_index, get_symbol_from_symbol_id
 
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D
 
-try:
-    model = tf.keras.models.load_model("model.h5")
-except OSError:
+
+def train(model_name):
     (x_train, y_train), (x_test, y_test) = load_dataset("dataset/images_train/", "dataset/images_test/")
 
     # Reshape images -> color value in array -> x_train is array of 3D Arrays
@@ -36,15 +35,22 @@ except OSError:
     model.fit(x=x_train, y=y_train, epochs=10)
 
     model.evaluate(x_test, y_test)
+    model.save(model_name)
 
-    model.save("model.h5")
 
-    image_index = 1
-    print(y_train[image_index])
+def predict(pixels):
+    try:
+        model = tf.keras.models.load_model("model.h5")
+    except OSError:
+        train("model.h5")
+        predict(pixels)
+    pixels = np.array(pixels)
+    pixels = pixels.reshape(64, 64, 1)
+    pixels = pixels.astype('float32')
 
-    imgplot = plt.imshow(x_train[image_index])
-    plt.show()
-    pred = model.predict(x_train[image_index].reshape(1, 64, 64, 1))
-    print(pred.argmax())
-    print(greek_symbol_ids[y_train[image_index]])
-    print(greek_symbol_ids[pred.argmax()])
+    pixels /= 255
+    pred = model.predict(pixels.reshape(1, 64, 64, 1))[0]
+
+    symbol = get_symbol_id_from_index(pred.argmax())
+
+    return symbol

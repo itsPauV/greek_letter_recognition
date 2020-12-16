@@ -103,6 +103,10 @@ __pypackages__/
 # Dataset
 dataset/
 
+# Models
+*.h5
+tfjs_model/
+
 # PyCharm
 .idea
 

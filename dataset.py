@@ -9,10 +9,10 @@ import cv2
 import numpy as np
 
 greek_symbol_ids = ["81", "82", "87", "88", "89", "116", "117", "151", "153", "154", "155",
-                        "157",
-                        "158", "159", "160", "161", "162", "164," "165", "166", "169", "170",
-                        "171",
-                        "172", "173", "174", "176", "177", "178", "180"]
+                    "157",
+                    "158", "159", "160", "161", "162", "164," "165", "166", "169", "170",
+                    "171",
+                    "172", "173", "174", "176", "177", "178", "180"]
 
 
 # https://arxiv.org/pdf/1701.08380.pdf
@@ -100,3 +100,20 @@ def map_labels(labels):
     labels = [greek_symbol_ids.index(str(x)) for x in labels]
     labels = np.array(labels)
     return labels
+
+
+def get_symbol_id_from_index(index):
+    try:
+        return get_symbol_from_symbol_id(int(greek_symbol_ids[index]))
+    except ValueError:
+        return None
+
+
+def get_symbol_from_symbol_id(symbol_id):
+    with open("dataset/letters/symbols.csv") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=";")
+        for row in csv_reader:
+            if row[0] == str(symbol_id):
+                return row[1]
+    csv_file.close()
+    return None
