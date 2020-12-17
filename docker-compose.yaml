@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+  web:
+    build: 
+      context: website
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - "./website/:/usr/share/nginx/html/"
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
