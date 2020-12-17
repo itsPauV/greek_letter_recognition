@@ -1,4 +1,4 @@
-from dataset import load_dataset, get_symbol_id_from_index, get_symbol_from_symbol_id
+from dataset_hasy import load_dataset, get_symbol_from_index
 
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -8,12 +8,14 @@ from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2
 
 
 def train(model_name):
-    (x_train, y_train), (x_test, y_test) = load_dataset("dataset/images_train/", "dataset/images_test/")
+    # (x_train, y_train), (x_test, y_test) = load_dataset("dataset/images_train/", "dataset/images_test/")
+    (x_train, y_train), (x_test, y_test) = load_dataset("dataset/HASYv2/hasy-data-labels.csv")
+
 
     # Reshape images -> color value in array -> x_train is array of 3D Arrays
-    x_train = x_train.reshape(x_train.shape[0], 64, 64, 1)
-    x_test = x_test.reshape(x_test.shape[0], 64, 64, 1)
-    input_shape = (64, 64, 1)
+    x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
+    x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
+    input_shape = (x_train.shape[1], x_train.shape[2], 1)
 
     x_train = x_train.astype('float32')
     x_test = x_test.astype('float32')
@@ -32,7 +34,7 @@ def train(model_name):
     model.add(Dense(29, activation=tf.nn.softmax))
 
     model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-    model.fit(x=x_train, y=y_train, epochs=10)
+    model.fit(x=x_train, y=y_train, epochs=20)
 
     model.evaluate(x_test, y_test)
     model.save(model_name)
@@ -45,12 +47,15 @@ def predict(pixels):
         train("model.h5")
         predict(pixels)
     pixels = np.array(pixels)
-    pixels = pixels.reshape(64, 64, 1)
+    pixels = pixels.reshape(pixels.shape[0], pixels.shape[1], 1)
     pixels = pixels.astype('float32')
 
     pixels /= 255
-    pred = model.predict(pixels.reshape(1, 64, 64, 1))[0]
+    pred = model.predict(pixels.reshape(1, pixels.shape[0], pixels.shape[1], 1))[0]
 
-    symbol = get_symbol_id_from_index(pred.argmax())
+    symbol = get_symbol_from_index(pred.argmax())
 
     return symbol
+
+
+train("hasy.h5")
