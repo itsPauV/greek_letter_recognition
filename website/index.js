@@ -51,7 +51,8 @@ function erase() {
 }
 
 async function save() {
-    const response = await fetch('http://127.0.0.1:5000/predict', {
+    // docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' greek_cnn_web_1
+    const response = await fetch('http://172.24.0.3:5000/predict', {
         method: 'POST',
         body: JSON.stringify(getArray()),
         headers: {
