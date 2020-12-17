@@ -8,7 +8,6 @@ from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2
 
 
 def train(model_name):
-    # (x_train, y_train), (x_test, y_test) = load_dataset("dataset/images_train/", "dataset/images_test/")
     (x_train, y_train), (x_test, y_test) = load_dataset("dataset/HASYv2/hasy-data-labels.csv")
 
 
