@@ -51,8 +51,8 @@ def load_dataset(filepath):
 
 
 def get_symbol_from_index(index, symbols_path):
-    with open("dataset/HASYv2/symbols.csv") as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=";")
+    with open(symbols_path) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
         symbol_id = greek_symbol_ids[index]
         for row in csv_reader:
             if row[0] == str(symbol_id):

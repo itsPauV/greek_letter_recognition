@@ -41,11 +41,7 @@ def train(model_name):
 
 
 def predict(pixels):
-    try:
-        model = tf.keras.models.load_model("model.h5")
-    except OSError:
-        train("model.h5")
-        predict(pixels)
+    model = tf.keras.models.load_model("hasy.h5")
     pixels = np.array(pixels)
     pixels = pixels.reshape(pixels.shape[0], pixels.shape[1], 1)
     pixels = pixels.astype('float32')
@@ -53,9 +49,6 @@ def predict(pixels):
     pixels /= 255
     pred = model.predict(pixels.reshape(1, pixels.shape[0], pixels.shape[1], 1))[0]
 
-    symbol = get_symbol_from_index(pred.argmax())
+    symbol = get_symbol_from_index(pred.argmax(), "dataset/HASYv2/symbols.csv")
 
     return symbol
-
-
-train("hasy.h5")

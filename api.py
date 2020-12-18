@@ -1,6 +1,6 @@
 import greek_cnn
 
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request
 
 app = Flask(__name__)
 

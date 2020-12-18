@@ -4,7 +4,7 @@ var canvas, ctx, flag = false,
     prevY = 0,
     currY = 0,
     dot_flag = false,
-    scale = 0.1;
+    scale = 0.05;
 
 var x = "black",
     y = 2;
@@ -52,7 +52,7 @@ function erase() {
 
 async function save() {
     // docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' greek_cnn_web_1
-    const response = await fetch('http://172.24.0.3:5000/predict', {
+    const response = await fetch('http://localhost:5000/predict', {
         method: 'POST',
         body: JSON.stringify(getArray()),
         headers: {
@@ -80,8 +80,8 @@ function getArray() {
             // bei i=403 -> 99
             // bei i=256+3 -> 1|0
             alphaValue = pix[i];
-            pixels[y_count][x_count] = (alphaValue > 100) ? 255 : 0;
-            if (x_count === 63) {
+            pixels[y_count][x_count] = (alphaValue > 100) ? 0 : 255;
+            if (x_count === 31) {
                 x_count = 0;
                 y_count++;
             } else {
