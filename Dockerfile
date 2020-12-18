@@ -5,7 +5,7 @@ COPY ./greek_cnn.py ./
 COPY ./api.py ./
 COPY ./dataset_hasy.py ./
 COPY ./hasy.h5 ./
-COPY ./dataset/HASYv2/symbols.csv ./dataset/HASYv2/
+COPY ./dataset/HASYv2/symbols.csv ./dataset/HASYv2/symbols.csv
 RUN ["pip", "install", "-r", "requirements.txt"]
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "libgl1-mesa-dev"]
