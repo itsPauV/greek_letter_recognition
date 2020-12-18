@@ -105,7 +105,7 @@ dataset/
 
 # Models
 *.h5
-tfjs_model/
+exported_model/
 
 # PyCharm
 .idea

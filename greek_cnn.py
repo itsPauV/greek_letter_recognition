@@ -26,6 +26,7 @@ def train(model_name):
     # Model
     model = Sequential()
     model.add(Conv2D(128, kernel_size=(3, 3), input_shape=input_shape))
+    model.add(Conv2D(32, kernel_size=(3, 3)))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Flatten())
     model.add(Dense(128, activation=tf.nn.relu))
