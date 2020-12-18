@@ -8,9 +8,12 @@ services:
       - "8080:80"
     volumes:
       - "./website/:/usr/share/nginx/html/"
+      - "./website/nginx-conf:/etc/nginx/conf.d"
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: tensorflow/serving
     ports:
-      - "5000:5000"
+      - 8501:8501
+    volumes:
+      - "./tmp/exported_model:/models/exported_model"
+    environment:
+      - MODEL_NAME=exported_model

@@ -52,9 +52,9 @@ function erase() {
 
 async function save() {
     // docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' greek_cnn_web_1
-    const response = await fetch('http://172.24.0.3:5000/predict', {
+    const response = await fetch('http://localhost:8501/v1/models/exported_model:predict', {
         method: 'POST',
-        body: JSON.stringify(getArray()),
+        body: JSON.stringify({"instances": getArray()}),
         headers: {
             'Content-Type': 'application/json'
         }
@@ -80,7 +80,10 @@ function getArray() {
             // bei i=403 -> 99
             // bei i=256+3 -> 1|0
             alphaValue = pix[i];
-            pixels[y_count][x_count] = (alphaValue > 100) ? 255 : 0;
+
+            
+            pixels[y_count][x_count] = new Array(1);
+            pixels[y_count][x_count][0] = (alphaValue > 100) ? 0 : 1;
             if (x_count === 63) {
                 x_count = 0;
                 y_count++;
@@ -91,8 +94,10 @@ function getArray() {
             console.log("error at i: " + i);
         }
     }
-    console.log(pixels);
-    return pixels;
+    pixels_shell = new Array(1);
+    pixels_shell[0] = pixels;
+    console.log(pixels_shell);
+    return pixels_shell;
 }
 
 function findxy(res, e) {
